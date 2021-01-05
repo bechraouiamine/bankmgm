@@ -1,5 +1,6 @@
 package com.arolla.bankmgm.api.services;
 
+import com.arolla.bankmgm.api.bootstrap.BootLoader;
 import com.arolla.bankmgm.api.model.ClientDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SpringBootTest
 public class ClientServiceIT {
+
+    private static final String NAME = "Client";
+
+    private static final String LAST_NAME = "Le Riche";
 
     @Autowired
     ClientService clientService;
@@ -40,10 +45,17 @@ public class ClientServiceIT {
         assertEquals(2, clientDtos.size());
     }
 
+    @Test
+    void testFindByNameAndLastName() {
+        ClientDto clientDto = clientService.findByNameAndLastName(BootLoader.NAME, BootLoader.LAST_NAME);
+
+        assertNotNull(clientDto);
+    }
+
     private ClientDto createClientDto() {
         return ClientDto.builder()
-                .name("Amine")
-                .lastName("BECHRAOUI")
+                .name(NAME)
+                .lastName(LAST_NAME)
                 .build();
     }
 }
