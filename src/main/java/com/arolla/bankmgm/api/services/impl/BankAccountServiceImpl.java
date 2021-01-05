@@ -23,16 +23,21 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccountDto findByIBAN(String IBAN) {
-        return null;
+        return bankAccountMapper.bankAccountToBankAccountDto(bankAccountRepository.findByIBAN(IBAN));
     }
 
     @Override
     public BigDecimal findBalanceByIBAN(String IBAN) {
-        return null;
+        return bankAccountRepository.findByIBAN(IBAN).getBalance();
     }
 
     @Override
     public BankAccountDto updateBankAccountBalance(BigDecimal amount, OperationTypeEnum operationType, String BankAccountIBAN) {
-        return null;
+        BankAccount bankAccount = bankAccountRepository.findByIBAN(BankAccountIBAN);
+        if (operationType.equals(OperationTypeEnum.WITHDRAWAL)) {
+            amount = amount.negate();
+        }
+        bankAccount.setBalance(bankAccount.getBalance().add(amount));
+        return bankAccountMapper.bankAccountToBankAccountDto(bankAccountRepository.saveAndFlush(bankAccount));
     }
 }
