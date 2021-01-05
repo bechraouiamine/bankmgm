@@ -7,15 +7,19 @@ import com.arolla.bankmgm.api.model.OperationDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Created by aminebechraoui, on 05/01/2021, in com.arolla.bankmgm.api.services
  */
 @SpringBootTest
+@Transactional
 public class OperationServiceIT {
 
     private static BigDecimal OPEARATION_AMOUNT = new BigDecimal(150);
@@ -54,6 +58,20 @@ public class OperationServiceIT {
         assertNotEquals(bankBalanceStart, bankBalanceEnd);
 
         assertEquals(bankBalanceStart.add(OPEARATION_AMOUNT), bankBalanceEnd);
+    }
+
+    @Test
+    void testFindAllByIban() {
+        OperationDto operationDto = createWithdrawalOperation();
+
+        OperationDto executedOperationDto = operationService.executeOperation(operationDto);
+
+        List<OperationDto> operationDtos = operationService.findAllOperationByIBAN(BootLoader.IBAN);
+
+        assertNotNull(operationDtos);
+
+        // We are expecting 2 operation as we already created an operation in BooLoader.java
+        assertEquals(2, operationDtos.size());
     }
 
     private OperationDto createWithdrawalOperation() {

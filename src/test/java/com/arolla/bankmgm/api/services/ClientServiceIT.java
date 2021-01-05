@@ -42,6 +42,7 @@ public class ClientServiceIT {
 
         assertNotNull(clientDtos);
 
+        // We are expecting 2 clients as we already created a client in BooLoader.java
         assertEquals(2, clientDtos.size());
     }
 

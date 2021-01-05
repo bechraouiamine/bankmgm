@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by aminebechraoui, on 05/01/2021, in com.arolla.bankmgm.api.services.impl
@@ -28,14 +29,18 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public OperationDto executeOperation(OperationDto operationDto) {
-        log.info(BEGIN_EXECUTE_OPERATION);
+        log.info(BEGIN_EXECUTE_OPERATION + operationDto);
+        bankAccountService.updateBankAccountBalance(operationDto.getAmount(), operationDto.getOperationType(), operationDto.getBankAccountDto().getIBAN());
 
-        log.info(END_EXECUTE_OPERATION);
-        return null;
+        OperationDto operationDtoResult = operationMapper.operationToOperationDto(operationRepository.save(operationMapper.operationDtoToOperation(operationDto)));
+
+        log.info(END_EXECUTE_OPERATION + operationDtoResult);
+        return operationDtoResult;
     }
 
     @Override
     public List<OperationDto> findAllOperationByIBAN(String IBAN) {
-        return null;
+        return operationRepository.findAllByBankAccountIBAN(IBAN).stream().map(operationMapper::operationToOperationDto).collect(Collectors.toList());
+
     }
 }
