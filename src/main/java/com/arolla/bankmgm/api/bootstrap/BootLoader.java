@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 @RequiredArgsConstructor
 @Component
-public class BootLoadder implements CommandLineRunner {
+public class BootLoader implements CommandLineRunner {
 
     public static final UUID CLIENT_1_UUID = UUID.randomUUID();
 
