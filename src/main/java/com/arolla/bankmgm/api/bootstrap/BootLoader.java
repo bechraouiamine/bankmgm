@@ -22,6 +22,12 @@ public class BootLoader implements CommandLineRunner {
 
     public static final String IBAN = "NL51ABNA4892894109";
 
+    public static final String NAME = "Amine";
+
+    public static final String LAST_NAME = "BECHRAOUI";
+
+    public static final BigDecimal BALANCE = new BigDecimal(10000);
+
     private final ClientRepository clientRepository;
     private final BankAccountRepository bankAccountRepository;
 
@@ -30,15 +36,15 @@ public class BootLoader implements CommandLineRunner {
         Client client = clientRepository.save(
                 Client.builder()
                         .id(CLIENT_1_UUID)
-                        .name("Amine")
-                        .lastName("BECHRAOUI")
+                        .name(NAME)
+                        .lastName(LAST_NAME)
                         .build()
         );
 
         bankAccountRepository.save(
                 BankAccount.builder()
                 .client(client)
-                .balance(new BigDecimal(10000))
+                .balance(BALANCE)
                 .IBAN(IBAN)
                 .build()
         );
