@@ -32,7 +32,7 @@ public class BootLoader implements CommandLineRunner {
 
     public static final String LAST_NAME = "BECHRAOUI";
 
-    public static final BigDecimal BALANCE = new BigDecimal(10000);
+    public static final BigDecimal BALANCE = new BigDecimal(1000);
 
     public static final BigDecimal AMOUNT = new BigDecimal(150);
 

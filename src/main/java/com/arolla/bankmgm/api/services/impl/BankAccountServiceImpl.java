@@ -38,6 +38,6 @@ public class BankAccountServiceImpl implements BankAccountService {
             amount = amount.negate();
         }
         bankAccount.setBalance(bankAccount.getBalance().add(amount));
-        return bankAccountMapper.bankAccountToBankAccountDto(bankAccountRepository.saveAndFlush(bankAccount));
+        return bankAccountMapper.bankAccountToBankAccountDto(bankAccountRepository.save(bankAccount));
     }
 }

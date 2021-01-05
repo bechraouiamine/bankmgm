@@ -1,5 +1,6 @@
 package com.arolla.bankmgm.api.services;
 
+import com.arolla.bankmgm.api.bootstrap.BootLoader;
 import com.arolla.bankmgm.api.domain.OperationTypeEnum;
 import com.arolla.bankmgm.api.model.BankAccountDto;
 import org.junit.jupiter.api.Test;
@@ -16,18 +17,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class BankAccountServiceIT {
 
-    private static final String IBAN = "NL51ABNA4892894109";
-
     @Autowired
     BankAccountService bankAccountService;
 
     @Test
     void testUpdateBankAccountBalance() {
-        BankAccountDto bankAccountDto = bankAccountService.findByIBAN(IBAN);
+        BankAccountDto bankAccountDto = bankAccountService.findByIBAN(BootLoader.IBAN);
 
         assertNotNull(bankAccountDto);
 
-        BankAccountDto bankAccountDtoUpdated = bankAccountService.updateBankAccountBalance(new BigDecimal(123), OperationTypeEnum.WITHDRAWAL, IBAN);
+        BankAccountDto bankAccountDtoUpdated = bankAccountService.updateBankAccountBalance(new BigDecimal(123), OperationTypeEnum.WITHDRAWAL, BootLoader.IBAN);
 
         assertEquals(bankAccountDto.getBalance().subtract(new BigDecimal(123)), bankAccountDtoUpdated.getBalance());
     }
