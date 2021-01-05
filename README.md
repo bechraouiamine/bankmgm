@@ -1,5 +1,7 @@
 # Bank account management kata for arolla
 
+To run the api : ./mvnw spring-boot:run
+
 BankAccount Controller : GET http://localhost:8080/api/v1/bank/bankaccount/bankaccounts/NL51ABNA4892894109
 
 Get all operation : GET localhost:8080/api/v1/bank/operation/operations/NL51ABNA4892894109
