@@ -33,5 +33,12 @@ public class OperationDto {
     @JsonProperty("createdDate")
     private OffsetDateTime createdDate = null;
 
-
+    @Override
+    public String toString() {
+        return "Operation : " +
+                " amount " + amount +
+                " operation type : " + operationType +
+                " bankAccount Balance : " + bankAccountDto.getBalance() +
+                " createdDate : " + createdDate;
+    }
 }

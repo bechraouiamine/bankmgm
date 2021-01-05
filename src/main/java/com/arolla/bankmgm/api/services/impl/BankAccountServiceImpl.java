@@ -7,6 +7,7 @@ import com.arolla.bankmgm.api.model.BankAccountDto;
 import com.arolla.bankmgm.api.repository.BankAccountRepository;
 import com.arolla.bankmgm.api.services.BankAccountService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,10 +15,16 @@ import java.math.BigDecimal;
 /**
  * Created by aminebechraoui, on 05/01/2021, in com.arolla.bankmgm.api.services.impl
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BankAccountServiceImpl implements BankAccountService {
-
+    public static final String END_UPDATE_BANK_ACCOUNT = "End updateBankAccountBalance : ";
+    public static final String BEGIN_UPDATE_BANK_ACCOUNT = "Begin updateBankAccountBalance : ";
+    public static final String OPERATION_TYPE = " OperationType : ";
+    public static final String AMOUNT = " Amount : ";
+    public static final String IBAN = " IBAN : ";
+    public static final String BANK_BALANCE = " Bank Balance : ";
     private final BankAccountRepository bankAccountRepository;
     private final BankAccountMapper bankAccountMapper;
 
@@ -34,10 +41,13 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public BankAccountDto updateBankAccountBalance(BigDecimal amount, OperationTypeEnum operationType, String BankAccountIBAN) {
         BankAccount bankAccount = bankAccountRepository.findByIBAN(BankAccountIBAN);
+        log.info(BEGIN_UPDATE_BANK_ACCOUNT + AMOUNT + amount + OPERATION_TYPE + operationType + IBAN + BankAccountIBAN + BANK_BALANCE + bankAccount.getBalance());
         if (operationType.equals(OperationTypeEnum.WITHDRAWAL)) {
             amount = amount.negate();
         }
         bankAccount.setBalance(bankAccount.getBalance().add(amount));
-        return bankAccountMapper.bankAccountToBankAccountDto(bankAccountRepository.save(bankAccount));
+        BankAccountDto updatedBankAccount = bankAccountMapper.bankAccountToBankAccountDto(bankAccountRepository.save(bankAccount));
+        log.info(BEGIN_UPDATE_BANK_ACCOUNT + AMOUNT + amount + OPERATION_TYPE + operationType + IBAN + updatedBankAccount.getIBAN() + BANK_BALANCE + updatedBankAccount.getBalance());
+        return updatedBankAccount;
     }
 }

@@ -22,11 +22,11 @@ public class BankAccountServiceIT {
 
     @Test
     void testUpdateBankAccountBalance() {
-        BankAccountDto bankAccountDto = bankAccountService.findByIBAN(BootLoader.IBAN);
+        BankAccountDto bankAccountDto = bankAccountService.findByIBAN(BootLoader.IBAN_TEST);
 
         assertNotNull(bankAccountDto);
 
-        BankAccountDto bankAccountDtoUpdated = bankAccountService.updateBankAccountBalance(new BigDecimal(123), OperationTypeEnum.WITHDRAWAL, BootLoader.IBAN);
+        BankAccountDto bankAccountDtoUpdated = bankAccountService.updateBankAccountBalance(new BigDecimal(123), OperationTypeEnum.WITHDRAWAL, BootLoader.IBAN_TEST);
 
         assertEquals(bankAccountDto.getBalance().subtract(new BigDecimal(123)), bankAccountDtoUpdated.getBalance());
     }
