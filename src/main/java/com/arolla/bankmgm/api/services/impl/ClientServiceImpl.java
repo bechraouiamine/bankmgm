@@ -25,21 +25,29 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto createClient(ClientDto clientDto) {
-        return null;
+        return clientMapper.clientToClientDto(
+                clientRepository.save(
+                        clientMapper.clientDtoToClient(clientDto)
+                )
+        );
     }
 
     @Override
     public List<ClientDto> listClient() {
-        return null;
+        return clientRepository.findAll()
+                .stream()
+                .map(
+                        clientMapper::clientToClientDto
+                ).collect(Collectors.toList());
     }
 
     @Override
     public ClientDto findById(UUID id) {
-        return null;
+        return clientMapper.clientToClientDto(clientRepository.getOne(id));
     }
 
     @Override
     public ClientDto findByNameAndLastName(String name, String lastName) {
-        return null;
+        return clientMapper.clientToClientDto(clientRepository.findByNameAndLastName(name, lastName));
     }
 }
