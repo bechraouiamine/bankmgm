@@ -40,7 +40,6 @@ public class BootLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Client client = clientRepository.save(
                 Client.builder()
-                        .id(CLIENT_1_UUID)
                         .name(NAME)
                         .lastName(LAST_NAME)
                         .build()

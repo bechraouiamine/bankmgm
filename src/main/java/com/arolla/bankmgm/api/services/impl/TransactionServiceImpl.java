@@ -3,6 +3,7 @@ package com.arolla.bankmgm.api.services.impl;
 import com.arolla.bankmgm.api.mapper.TransactionMapper;
 import com.arolla.bankmgm.api.model.BankAccountDto;
 import com.arolla.bankmgm.api.model.TransactionDto;
+import com.arolla.bankmgm.api.printers.Printer;
 import com.arolla.bankmgm.api.repository.TransactionRepository;
 import com.arolla.bankmgm.api.services.BankAccountService;
 import com.arolla.bankmgm.api.services.TransactionService;
@@ -26,6 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
     private final TransactionMapper transactionMapper;
+    private final Printer<TransactionDto> transactionDtoPrinter;
 
     @Override
     public TransactionDto executeTransaction(TransactionDto transactionDto) {
@@ -34,6 +36,8 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDto.setBankAccountDto(bankAccountDto);
 
         TransactionDto transactionDtoResult = transactionMapper.transactionToTransactionDto(transactionRepository.save(transactionMapper.transactionDtoToTransaction(transactionDto)));
+
+        transactionDtoPrinter.print(transactionDtoResult);
 
         return transactionDtoResult;
     }

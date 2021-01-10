@@ -4,6 +4,7 @@ import com.arolla.bankmgm.api.domain.BankAccount;
 import com.arolla.bankmgm.api.domain.TransactionTypeEnum;
 import com.arolla.bankmgm.api.mapper.BankAccountMapper;
 import com.arolla.bankmgm.api.model.BankAccountDto;
+import com.arolla.bankmgm.api.printers.impl.BankAccountPrinter;
 import com.arolla.bankmgm.api.repository.BankAccountRepository;
 import com.arolla.bankmgm.api.services.BankAccountService;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,14 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class BankAccountServiceImpl implements BankAccountService {
-    public static final String END_UPDATE_BANK_ACCOUNT = "End updateBankAccountBalance : ";
-    public static final String BEGIN_UPDATE_BANK_ACCOUNT = "Begin updateBankAccountBalance : ";
     public static final String Transaction_TYPE = " transaction type : ";
     public static final String AMOUNT = " Amount : ";
     public static final String IBAN = " IBAN : ";
     public static final String BANK_BALANCE = " Bank Balance : ";
+
     private final BankAccountRepository bankAccountRepository;
     private final BankAccountMapper bankAccountMapper;
+    private final BankAccountPrinter bankAccountPrinter;
 
     @Override
     public BankAccountDto findByIBAN(String IBAN) {
@@ -40,14 +41,24 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccountDto updateBankAccountBalance(BigDecimal amount, TransactionTypeEnum transactionType, String BankAccountIBAN) {
-        BankAccount bankAccount = bankAccountRepository.findByIBAN(BankAccountIBAN);
-        log.info(BEGIN_UPDATE_BANK_ACCOUNT + AMOUNT + amount + Transaction_TYPE + transactionType + IBAN + BankAccountIBAN + BANK_BALANCE + bankAccount.getBalance());
+        BankAccountDto bankAccountDto = findByIBAN(BankAccountIBAN);
+
+        bankAccountPrinter.print(bankAccountDto);
+
         if (transactionType.equals(TransactionTypeEnum.WITHDRAWAL)) {
             amount = amount.negate();
         }
-        bankAccount.setBalance(bankAccount.getBalance().add(amount));
-        BankAccountDto updatedBankAccount = bankAccountMapper.bankAccountToBankAccountDto(bankAccountRepository.save(bankAccount));
-        log.info(BEGIN_UPDATE_BANK_ACCOUNT + AMOUNT + amount + Transaction_TYPE + transactionType + IBAN + updatedBankAccount.getIBAN() + BANK_BALANCE + updatedBankAccount.getBalance());
+
+        bankAccountDto.setBalance(bankAccountDto.getBalance().add(amount));
+
+        BankAccountDto updatedBankAccount = bankAccountMapper.bankAccountToBankAccountDto(
+                bankAccountRepository.save(
+                        bankAccountMapper.bankAccountDtoToBankAccount(bankAccountDto)
+                )
+        );
+
+        bankAccountPrinter.print(updatedBankAccount);
+
         return updatedBankAccount;
     }
 }
