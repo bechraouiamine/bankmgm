@@ -4,6 +4,7 @@ import com.arolla.bankmgm.api.bootstrap.BootLoader;
 import com.arolla.bankmgm.api.domain.TransactionTypeEnum;
 import com.arolla.bankmgm.api.model.TransactionDto;
 import lombok.RequiredArgsConstructor;
+import lombok.With;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,9 @@ import java.time.OffsetDateTime;
 @RequiredArgsConstructor
 public class WorkHardPlayHard {
 
-    private final TransactionService transactionService;
+    private final DepositService depositService;
+
+    private final WithdrawalService withdrawalService;
 
     private final BankAccountService bankAccountService;
 
@@ -37,7 +40,7 @@ public class WorkHardPlayHard {
 
         if (balance.compareTo(highBalance) < 0) {
             log.info("Work Hard");
-            transactionService.executeTransaction(
+            depositService.depositTransaction(
                     TransactionDto.builder()
                             .transactionType(TransactionTypeEnum.DEPOSIT)
                             .bankAccountDto(bankAccountService.findByIBAN(BootLoader.IBAN))
@@ -49,7 +52,7 @@ public class WorkHardPlayHard {
         }
         else if (balance.compareTo(lowBalance) > 0) {
             log.info("Play Hard");
-            transactionService.executeTransaction(
+            withdrawalService.withdrawalTransaction(
                     TransactionDto.builder()
                             .transactionType(TransactionTypeEnum.WITHDRAWAL)
                             .bankAccountDto(bankAccountService.findByIBAN(BootLoader.IBAN))

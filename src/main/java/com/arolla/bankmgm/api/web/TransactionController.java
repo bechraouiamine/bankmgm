@@ -1,7 +1,8 @@
 package com.arolla.bankmgm.api.web;
 
 import com.arolla.bankmgm.api.model.TransactionDto;
-import com.arolla.bankmgm.api.services.TransactionService;
+import com.arolla.bankmgm.api.services.DepositService;
+import com.arolla.bankmgm.api.services.ListTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionController {
 
-    private final TransactionService transactionService;
+    private final ListTransactionService listTransactionService;
+
+    private final DepositService depositService;
 
     @GetMapping("transactions/{iban}")
     public List<TransactionDto> listCustomer(@PathVariable("iban") String iban) {
-        return transactionService.findAllTransactionsByIBAN(iban);
+        return listTransactionService.findAllTransactionsByIBAN(iban);
     }
 
     @PostMapping("transaction")
     @ResponseStatus(HttpStatus.CREATED)
     public TransactionDto placeOrder(@RequestBody TransactionDto transactionDto) {
-        return transactionService.executeTransaction(transactionDto);
+        return depositService.depositTransaction(transactionDto);
     }
 
 }

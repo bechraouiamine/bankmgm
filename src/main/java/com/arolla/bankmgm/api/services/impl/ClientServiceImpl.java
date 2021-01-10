@@ -3,6 +3,7 @@ package com.arolla.bankmgm.api.services.impl;
 import com.arolla.bankmgm.api.domain.Client;
 import com.arolla.bankmgm.api.mapper.ClientMapper;
 import com.arolla.bankmgm.api.model.ClientDto;
+import com.arolla.bankmgm.api.printers.Printer;
 import com.arolla.bankmgm.api.repository.ClientRepository;
 import com.arolla.bankmgm.api.services.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
     private final ClientMapper clientMapper;
+
+    private final Printer<ClientDto> clientDtoPrinter;
 
     @Override
     public ClientDto createClient(ClientDto clientDto) {
@@ -43,11 +46,15 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto findById(UUID id) {
-        return clientMapper.clientToClientDto(clientRepository.getOne(id));
+        ClientDto clientDto = clientMapper.clientToClientDto(clientRepository.getOne(id));
+        clientDtoPrinter.print(clientDto);
+        return clientDto;
     }
 
     @Override
     public ClientDto findByNameAndLastName(String name, String lastName) {
-        return clientMapper.clientToClientDto(clientRepository.findByNameAndLastName(name, lastName));
+        ClientDto clientDto =clientMapper.clientToClientDto(clientRepository.findByNameAndLastName(name, lastName));
+        clientDtoPrinter.print(clientDto);
+        return clientDto;
     }
 }
