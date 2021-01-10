@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Created by aminebechraoui, on 05/01/2021, in com.arolla.bankmgm.api.services
  */
 @SpringBootTest
-public class ClientServiceIT {
+public class ClientServiceTests {
 
     private static final String NAME = "Client";
 

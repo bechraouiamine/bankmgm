@@ -4,6 +4,7 @@ import com.arolla.bankmgm.api.bootstrap.BootLoader;
 import com.arolla.bankmgm.api.domain.TransactionTypeEnum;
 import com.arolla.bankmgm.api.model.BankAccountDto;
 import com.arolla.bankmgm.api.model.TransactionDto;
+import com.sun.xml.bind.v2.runtime.reflect.ListTransducedAccessorImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @SpringBootTest
 @Transactional
-public class TransactionServiceIT {
+public class TransactionServiceTests {
 
     private static BigDecimal TRANSACTION_AMOUNT = new BigDecimal(150);
 
@@ -28,13 +29,19 @@ public class TransactionServiceIT {
     private BankAccountService bankAccountService;
 
     @Autowired
-    private TransactionService transactionService;
+    private DepositService depositService;
+
+    @Autowired
+    private WithdrawalService withdrawalService;
+
+    @Autowired
+    private ListTransactionService listTransactionService;
 
     @Test
     void testExecuteWithdrawalTransaction() {
         BigDecimal bankBalanceStart = bankAccountService.findBalanceByIBAN(BootLoader.IBAN_TEST);
 
-        TransactionDto transactionDto = transactionService.executeTransaction(createWithdrawalTransaction());
+        TransactionDto transactionDto = withdrawalService.withdrawalTransaction(createWithdrawalTransaction());
 
         BigDecimal bankBalanceEnd = bankAccountService.findBalanceByIBAN(BootLoader.IBAN_TEST);
 
@@ -49,7 +56,7 @@ public class TransactionServiceIT {
     void testExecuteDepositTransaction() {
         BigDecimal bankBalanceStart = bankAccountService.findBalanceByIBAN(BootLoader.IBAN_TEST);
 
-        TransactionDto transactionDto = transactionService.executeTransaction(createDepositTransaction());
+        TransactionDto transactionDto = depositService.depositTransaction(createDepositTransaction());
 
         BigDecimal bankBalanceEnd = bankAccountService.findBalanceByIBAN(BootLoader.IBAN_TEST);
 
@@ -64,9 +71,9 @@ public class TransactionServiceIT {
     void testFindAllByIban() {
         TransactionDto transactionDto = createWithdrawalTransaction();
 
-        TransactionDto executedTransactionDto = transactionService.executeTransaction(transactionDto);
+        TransactionDto executedTransactionDto = depositService.depositTransaction(transactionDto);
 
-        List<TransactionDto> transactionDtos = transactionService.findAllTransactionsByIBAN(BootLoader.IBAN_TEST);
+        List<TransactionDto> transactionDtos = listTransactionService.findAllTransactionsByIBAN(BootLoader.IBAN_TEST);
 
         assertNotNull(transactionDtos);
 
