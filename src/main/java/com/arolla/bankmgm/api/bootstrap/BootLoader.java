@@ -2,11 +2,11 @@ package com.arolla.bankmgm.api.bootstrap;
 
 import com.arolla.bankmgm.api.domain.BankAccount;
 import com.arolla.bankmgm.api.domain.Client;
-import com.arolla.bankmgm.api.domain.Operation;
-import com.arolla.bankmgm.api.domain.OperationTypeEnum;
+import com.arolla.bankmgm.api.domain.Transaction;
+import com.arolla.bankmgm.api.domain.TransactionTypeEnum;
 import com.arolla.bankmgm.api.repository.BankAccountRepository;
 import com.arolla.bankmgm.api.repository.ClientRepository;
-import com.arolla.bankmgm.api.repository.OperationRepository;
+import com.arolla.bankmgm.api.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -35,7 +34,7 @@ public class BootLoader implements CommandLineRunner {
 
     private final ClientRepository clientRepository;
     private final BankAccountRepository bankAccountRepository;
-    private final OperationRepository operationRepository;
+    private final TransactionRepository transactionRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -65,11 +64,11 @@ public class BootLoader implements CommandLineRunner {
                         .build()
         );
 
-        Operation operation = operationRepository.save(
-                Operation.builder()
+        Transaction transaction = transactionRepository.save(
+                Transaction.builder()
                 .amount(AMOUNT)
                 .bankAccount(bankAccount)
-                .operationType(OperationTypeEnum.WITHDRAWAL)
+                .transactionType(TransactionTypeEnum.WITHDRAWAL)
                 .createdDate(Timestamp.from(Instant.now()))
                 .build()
         );

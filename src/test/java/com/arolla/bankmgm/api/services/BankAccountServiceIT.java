@@ -1,7 +1,7 @@
 package com.arolla.bankmgm.api.services;
 
 import com.arolla.bankmgm.api.bootstrap.BootLoader;
-import com.arolla.bankmgm.api.domain.OperationTypeEnum;
+import com.arolla.bankmgm.api.domain.TransactionTypeEnum;
 import com.arolla.bankmgm.api.model.BankAccountDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class BankAccountServiceIT {
 
         assertNotNull(bankAccountDto);
 
-        BankAccountDto bankAccountDtoUpdated = bankAccountService.updateBankAccountBalance(new BigDecimal(123), OperationTypeEnum.WITHDRAWAL, BootLoader.IBAN_TEST);
+        BankAccountDto bankAccountDtoUpdated = bankAccountService.updateBankAccountBalance(new BigDecimal(123), TransactionTypeEnum.WITHDRAWAL, BootLoader.IBAN_TEST);
 
         assertEquals(bankAccountDto.getBalance().subtract(new BigDecimal(123)), bankAccountDtoUpdated.getBalance());
     }

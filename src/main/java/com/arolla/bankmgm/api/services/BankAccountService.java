@@ -1,6 +1,6 @@
 package com.arolla.bankmgm.api.services;
 
-import com.arolla.bankmgm.api.domain.OperationTypeEnum;
+import com.arolla.bankmgm.api.domain.TransactionTypeEnum;
 import com.arolla.bankmgm.api.model.BankAccountDto;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +16,5 @@ public interface BankAccountService {
 
     BigDecimal findBalanceByIBAN(String IBAN);
 
-    BankAccountDto updateBankAccountBalance(BigDecimal amount, OperationTypeEnum operationType, String BankAccountIBAN);
+    BankAccountDto updateBankAccountBalance(BigDecimal amount, TransactionTypeEnum transactionType, String BankAccountIBAN);
 }

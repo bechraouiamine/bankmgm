@@ -25,5 +25,5 @@ public class BankAccountDto {
 
     private String IBAN;
 
-    private List<OperationDto> operationDtos;
+    private List<TransactionDto> transactionDtos;
 }

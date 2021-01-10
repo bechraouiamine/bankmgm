@@ -1,7 +1,6 @@
 package com.arolla.bankmgm.api.model;
 
-import com.arolla.bankmgm.api.domain.BankAccount;
-import com.arolla.bankmgm.api.domain.OperationTypeEnum;
+import com.arolla.bankmgm.api.domain.TransactionTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -20,12 +19,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OperationDto {
+public class TransactionDto {
     private UUID id;
 
     private BigDecimal amount;
 
-    private OperationTypeEnum operationType;
+    private TransactionTypeEnum transactionType;
 
     private BankAccountDto bankAccountDto;
 
@@ -33,12 +32,4 @@ public class OperationDto {
     @JsonProperty("createdDate")
     private OffsetDateTime createdDate = null;
 
-    @Override
-    public String toString() {
-        return "Operation : " +
-                " amount " + amount +
-                " operation type : " + operationType +
-                " bankAccount Balance : " + bankAccountDto.getBalance() +
-                " createdDate : " + createdDate;
-    }
 }

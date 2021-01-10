@@ -34,5 +34,5 @@ public class BankAccount {
     private String IBAN;
 
     @OneToMany(mappedBy = "bankAccount")
-    private Set<Operation> operations;
+    private Set<Transaction> transactions;
 }

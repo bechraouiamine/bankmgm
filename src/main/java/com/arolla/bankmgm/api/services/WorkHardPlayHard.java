@@ -1,10 +1,8 @@
 package com.arolla.bankmgm.api.services;
 
 import com.arolla.bankmgm.api.bootstrap.BootLoader;
-import com.arolla.bankmgm.api.domain.BankAccount;
-import com.arolla.bankmgm.api.domain.Operation;
-import com.arolla.bankmgm.api.domain.OperationTypeEnum;
-import com.arolla.bankmgm.api.model.OperationDto;
+import com.arolla.bankmgm.api.domain.TransactionTypeEnum;
+import com.arolla.bankmgm.api.model.TransactionDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /**
  * Created by aminebechraoui, on 05/01/2021, in com.arolla.bankmgm.api.services
@@ -23,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WorkHardPlayHard {
 
-    private final OperationService operationService;
+    private final TransactionService transactionService;
 
     private final BankAccountService bankAccountService;
 
@@ -40,9 +37,9 @@ public class WorkHardPlayHard {
 
         if (balance.compareTo(highBalance) < 0) {
             log.info("Work Hard");
-            operationService.executeOperation(
-                    OperationDto.builder()
-                            .operationType(OperationTypeEnum.DEPOSIT)
+            transactionService.executeTransaction(
+                    TransactionDto.builder()
+                            .transactionType(TransactionTypeEnum.DEPOSIT)
                             .bankAccountDto(bankAccountService.findByIBAN(BootLoader.IBAN))
                             .amount(new BigDecimal(200))
                             .createdDate(OffsetDateTime.now())
@@ -52,9 +49,9 @@ public class WorkHardPlayHard {
         }
         else if (balance.compareTo(lowBalance) > 0) {
             log.info("Play Hard");
-            operationService.executeOperation(
-                    OperationDto.builder()
-                            .operationType(OperationTypeEnum.WITHDRAWAL)
+            transactionService.executeTransaction(
+                    TransactionDto.builder()
+                            .transactionType(TransactionTypeEnum.WITHDRAWAL)
                             .bankAccountDto(bankAccountService.findByIBAN(BootLoader.IBAN))
                             .amount(new BigDecimal(600))
                             .createdDate(OffsetDateTime.now())

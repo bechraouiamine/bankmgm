@@ -18,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Operation {
+public class Transaction {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -28,7 +28,7 @@ public class Operation {
 
     private BigDecimal amount;
 
-    private OperationTypeEnum operationType;
+    private TransactionTypeEnum transactionType;
 
     @ManyToOne
     private BankAccount bankAccount;
